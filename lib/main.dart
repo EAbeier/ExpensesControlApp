@@ -1,3 +1,4 @@
+import 'package:expenses/components/transaction_user.dart';
 import 'package:flutter/material.dart';
 
 main() => runApp(ExpensesApp());
@@ -21,18 +22,20 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(fontFamily: 'Fira code'),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: Card(
-              child: Text('Graphic'),
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                child: Card(
+                  child: Text('Graphic'),
+                ),
+              ),
+              TransactionUser(),
+            ],
           ),
-          Card(
-            child: Text('Transactions list'),
-          ),
-        ],
+        ),
       ),
     );
   }
