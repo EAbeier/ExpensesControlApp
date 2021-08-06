@@ -21,6 +21,12 @@ class MyHomePage extends StatelessWidget {
           'Personal Expenses',
           style: TextStyle(fontFamily: 'Fira code'),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => {},
+            icon: Icon(Icons.add),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -36,6 +42,10 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }
