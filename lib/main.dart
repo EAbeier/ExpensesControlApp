@@ -1,3 +1,4 @@
+import 'package:expenses/components/chart.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import 'components/transaction_form.dart';
@@ -26,19 +27,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 'T1',
-    //   title: 'Transaction 1',
-    //   value: 200.00,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 'T2',
-    //   title: 'Transaction 2',
-    //   value: 300.00,
-    //   date: DateTime.now(),
-    // )
+    Transaction(
+      id: 'T0',
+      title: 'Transaction 0',
+      value: 400.00,
+      date: DateTime.now().subtract(Duration(days: 33)),
+    ),
+    Transaction(
+      id: 'T1',
+      title: 'Transaction 1',
+      value: 100.00,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 'T2',
+      title: 'Transaction 2',
+      value: 300.00,
+      date: DateTime.now().subtract(Duration(days: 4)),
+    )
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -66,36 +79,28 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Personal Expenses',
-          style: TextStyle(fontFamily: 'Roboto'),
-        ),
-        actions: [
+        title: Text('Despesas Pessoais'),
+        actions: <Widget>[
           IconButton(
-            onPressed: () => _openTransactionFormModal(context),
             icon: Icon(Icons.add),
+            onPressed: () => _openTransactionFormModal(context),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                child: Card(
-                  child: Text('Graphic'),
-                ),
-              ),
-              TransactionList(_transactions),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Chart(_recentTransactions),
+            TransactionList(_transactions),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
