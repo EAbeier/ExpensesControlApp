@@ -88,6 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final appBar = AppBar(
       title: Text('Personal expenses'),
       actions: <Widget>[
+        if (isLandscape)
+          IconButton(
+            icon: Icon(_chartIsShowed ? Icons.list : Icons.show_chart),
+            onPressed: () {
+              setState(() {
+                _chartIsShowed = !_chartIsShowed;
+              });
+            },
+          ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -105,30 +114,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Exibir gráfico.'),
-                  Switch(
-                    value: _chartIsShowed,
-                    onChanged: (value) {
-                      setState(() {
-                        _chartIsShowed = value;
-                      });
-                    },
-                  ),
-                ],
+            if (_chartIsShowed || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 0.70 : 0.30),
+                child: Chart(_recentTransactions),
               ),
-            _chartIsShowed
-                ? Container(
-                    height: availableHeight * 0.30,
-                    child: Chart(_recentTransactions),
-                  )
-                : Container(
-                    height: availableHeight * 0.70,
-                    child: TransactionList(_transactions, _removeTransAction),
-                  ),
+            if (!_chartIsShowed || !isLandscape)
+              Container(
+                height: availableHeight * 0.70,
+                child: TransactionList(_transactions, _removeTransAction),
+              ),
           ],
         ),
       ),
